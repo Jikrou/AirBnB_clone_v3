@@ -37,14 +37,16 @@ def delete_user(user_id):
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_user():
     """ create a User object"""
-    if not request.get_json():
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
+
     if 'email' not in request.get_json():
         abort(400, description="Missing email")
     if 'password' not in request.get_json():
         abort(400, description="Missing password")
 
-    data = request.get_json()
     f_name = data.get('first_name', "")
     l_name = data.get('last_name', "")
     obj = User(**data)
@@ -58,9 +60,11 @@ def update_user(user_id):
     obj = storage.get(User, user_id)
     if not obj:
         abort(404)
-    if not request.get_json():
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
-    data = request.get_json()
+
     ignore_keys = ['id', 'email', 'created_at', 'updated_at']
     for key, value in data.items():
         if key not in ignore_keys:
