@@ -42,9 +42,9 @@ def create_user():
     except Exception:
         abort(400, description="Not a JSON")
 
-    if 'email' not in request.get_json():
+    if 'email' not in data:
         abort(400, description="Missing email")
-    if 'password' not in request.get_json():
+    if 'password' not in data:
         abort(400, description="Missing password")
 
     obj = User(**data)
