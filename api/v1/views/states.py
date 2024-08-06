@@ -20,7 +20,7 @@ def states_obj_id(state_id=None):
     obj = storage.get(State, state_id)
     if not obj:
         abort(404)
-    return jsonify([obj.to_dict()])
+    return jsonify(obj.to_dict())
 
 
 @app_views.route(
