@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Place view for API """
+
 from flask import request, abort, jsonify
 from models import storage
 from models.place import Place

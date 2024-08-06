@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """User view for API"""
+
 from flask import request, abort, jsonify
 from models import storage
 from models.user import User
