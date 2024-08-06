@@ -1,5 +1,13 @@
 #!/usr/bin/python3
-""" Flask App that integrates with AirBnB static HTML Template """
+"""
+This module contains the main application for the API.
+
+The API is designed to provide endpoints for managing resources.
+It uses Flask to handle HTTP requests and integrates with a storage
+system to manage data persistence.
+
+"""
+
 from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views

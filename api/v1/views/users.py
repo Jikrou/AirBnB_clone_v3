@@ -45,6 +45,8 @@ def create_user():
         abort(400, description="Missing password")
 
     data = request.get_json()
+    f_name = data.get('first_name', "")
+    l_name = data.get('last_name', "")
     obj = User(**data)
     obj.save()
     return jsonify(obj.to_dict()), 201
