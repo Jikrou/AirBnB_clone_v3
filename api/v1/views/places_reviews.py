@@ -9,7 +9,8 @@ from models.review import Review
 from models.user import User
 
 
-@app_views.route("/places/<place_id>/reviews", methods=["GET"], strict_slashes=False)
+@app_views.route(
+        "/places/<place_id>/reviews", methods=["GET"], strict_slashes=False)
 def get_place_reviews(place_id):
     """Retrieves the list of all Review objects of a Place"""
     obj = storage.get(Place, place_id)
@@ -27,7 +28,8 @@ def get_review(review_id):
     return jsonify(obj.to_dict())
 
 
-@app_views.route("/reviews/<review_id>", methods=["DELETE"], strict_slashes=False)
+@app_views.route(
+        "/reviews/<review_id>", methods=["DELETE"], strict_slashes=False)
 def delete_review(review_id):
     """Deletes a Review object"""
     obj = storage.get(Review, review_id)
@@ -38,7 +40,8 @@ def delete_review(review_id):
     return jsonify({}), 200
 
 
-@app_views.route("/places/<place_id>/reviews", methods=["POST"], strict_slashes=False)
+@app_views.route(
+        "/places/<place_id>/reviews", methods=["POST"], strict_slashes=False)
 def create_review(place_id):
     """Creates a Review"""
     obj = storage.get(Place, place_id)
@@ -67,8 +70,10 @@ def update_review(review_id):
         abort(404)
     if not request.get_json():
         abort(400, description="Not a JSON")
+
+    ignore_key = ["id", "user_id", "place_id", "created_at", "updated_at"]
     for key, value in request.get_json().items():
-        if key not in ["id", "user_id", "place_id", "created_at", "updated_at"]:
+        if key not in ignore_keys:
             setattr(obj, key, value)
     obj.save()
     return jsonify(obj.to_dict()), 200
