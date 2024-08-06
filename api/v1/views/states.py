@@ -38,11 +38,12 @@ def states_obj_del(state_id=None):
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def states_obj_create():
     """ create an obj state """
-    if not request.get_json():
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
     if 'name' not in request.get_json():
         abort(400, description="Missing name")
-    data = request.get_json()
     new_obj = State(**data)
     new_obj.save()
     return jsonify(new_obj.to_dict()), 201
@@ -53,9 +54,10 @@ def states_obj_update(state_id=None):
     obj = storage.get(State, state_id)
     if not obj:
         abort(404)
-    if not request.get_json():
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
-    data = request.get_json()
     ignore_keys = ['id', 'created_at', 'updated_at']
     for key, value in data.items():
         if key not in ignore_keys:
