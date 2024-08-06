@@ -47,12 +47,14 @@ def create_city(state_id):
     obj = storage.get(State, state_id)
     if not obj:
         abort(404, "Not found")
-    if not request.get_json():
+
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
     if "name" not in request.get_json():
         abort(400, description="Missing name")
 
-    data = request.get_json()
     data["state_id"] = state_id
     new_obj = City(**data)
     new_obj.save()
