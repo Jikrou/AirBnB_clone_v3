@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ State view dor RESTFul API"""
 
-from flask import jsonify, abort, request
 from api.v1.views import app_views
+from flask import jsonify, abort, request
 from models import storage
 from models.state import State
 
@@ -16,7 +16,7 @@ def states_obj():
 
 
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
-def states_obj_id(state_id):
+def states_obj_id(state_id=None):
     obj = storage.get(State, state_id)
     if not obj:
         abort(404)
@@ -25,7 +25,7 @@ def states_obj_id(state_id):
 
 @app_views.route(
         '/states/<state_id>', methods=['DELETE'], strict_slashes=False)
-def states_obj_del(state_id):
+def states_obj_del(state_id=None):
     """deletes astates object """
     obj = storage.get(State, state_id)
     if not obj:
@@ -49,7 +49,7 @@ def states_obj_create():
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
-def states_obj_update(state_id):
+def states_obj_update(state_id=None):
     obj = storage.get(State, state_id)
     if not obj:
         abort(404)
