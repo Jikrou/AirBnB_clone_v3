@@ -6,6 +6,7 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -86,3 +87,49 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    def test_get(self):
+        """Test the get method"""
+        # Create and save a new User
+        new_user = User(email="test@example.com", password="password")
+        new_user.save()
+
+        # Retrieve the user using get method
+        retrieved_user = storage.get(User, new_user.id)
+
+        self.assertIsNotNone(retrieved_user)
+        self.assertEqual(retrieved_user.id, new_user.id)
+        self.assertEqual(retrieved_user.email, "test@example.com")
+
+        # Test with non-existent ID
+        non_existent = storage.get(User, "non_existent_id")
+        self.assertIsNone(non_existent)
+
+    def test_count(self):
+        """Test the count method"""
+        initial_count = storage.count()
+
+        # Create and save a new State (which is stored in the database)
+        new_state = State(name="Test State")
+        new_state.save()
+
+        # Check total count
+        self.assertEqual(storage.count(), initial_count + 1)
+
+        # Check count for State class
+        self.assertEqual(storage.count(State), storage.count(State))
+
+        # Check count for User class (which might be 0 if no users exist)
+        user_count = storage.count(User)
+        self.assertIsInstance(user_count, int)
+
+        # Create and save a new User
+        new_user = User(email="count@example.com", password="password")
+        new_user.save()
+
+        # Check that User count has increased by 1
+        self.assertEqual(storage.count(User), user_count + 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
