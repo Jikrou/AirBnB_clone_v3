@@ -7,7 +7,8 @@ from models.city import City
 from models.user import User
 from api.v1.views import app_views
 
-@app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
+@app_views.route(
+        '/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
 def get_places(city_id):
     """retrieve a list of all Place objects"""
     obj = storage.get(City, city_id)
@@ -26,7 +27,8 @@ def get_place(place_id):
     return jsonify(obj.to_dict())
 
 
-@app_views.route('/places/<place_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route(
+        '/places/<place_id>', methods=['DELETE'], strict_slashes=False)
 def delete_place(place_id):
     """ delete Place object """
     obj = storage.get(Place, place_id)
@@ -37,7 +39,8 @@ def delete_place(place_id):
     return jsonify({}), 200
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'], strict_slashes=False)
+@app_views.route(
+        '/cities/<city_id>/places', methods=['POST'], strict_slashes=False)
 def create_place(city_id):
     """ create a Place object"""
     obj = storage.get(City, city_id)
@@ -49,12 +52,12 @@ def create_place(city_id):
     data = request.get_json()
     if 'user_id' not in request.get_json():
         abort(400, description="Missing user_id")
-    user = storage.get(User,data['user_id']) 
+    user = storage.get(User, data['user_id'])
     if not user:
         abort(404)
     if 'name' not in request.get_json():
         abort(400, description="Missing name")
-    
+
     data['city_id'] = city_id
     new_obj = Place(**data)
     new_obj.save()

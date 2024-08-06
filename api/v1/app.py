@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" app module for running the application """
+""" Flask App that integrates with AirBnB static HTML Template """
 from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
@@ -22,6 +22,7 @@ def error_nof(error):
 
 
 if __name__ == "__main__":
+    """ main flask app"""
     import os
     host = os.getenv('HBNB_API_HOST', '0.0.0.0')
     port = int(os.getenv('HBNB_API_PORT', 5000))
