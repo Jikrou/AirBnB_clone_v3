@@ -14,7 +14,7 @@ def det_cities(state_id):
     """Retrieve the list of all City object of a state"""
     obj = storage.get(State, state_id)
     if not obj:
-        abort(404)
+        abort(404, "Not found")
     cities = [city.to_dict() for city in obj.cities]
     return jsonify(cities)
 
@@ -24,7 +24,7 @@ def get_city(city_id):
     """Retrieve a city object"""
     obj = storage.get(City, city_id)
     if not obj:
-        abort(404)
+        abort(404, "Not found")
     return jsonify(obj.to_dict())
 
 
@@ -34,7 +34,7 @@ def del_city(city_id):
     """delete a city object"""
     obj = storage.get(City, city_id)
     if not obj:
-        abort(404)
+        abort(404, "Not found")
     storage.delete(obj)
     storage.save()
     return jsonify({}), 200
@@ -46,7 +46,7 @@ def create_city(state_id):
     """Create a city object"""
     obj = storage.get(State, state_id)
     if not obj:
-        abort(404)
+        abort(404, "Not found")
     if not request.get_json():
         abort(400, description="Not a JSON")
     if "name" not in request.get_json():
@@ -64,7 +64,7 @@ def update_city(city_id):
     """Update city object"""
     obj = storage.get(City, city_id)
     if not obj:
-        abort(404)
+        abort(404, "Not found")
     if not request.get_json():
         abort(400, description="Not a JSON")
 
