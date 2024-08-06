@@ -65,10 +65,12 @@ def update_city(city_id):
     obj = storage.get(City, city_id)
     if not obj:
         abort(404, "Not found")
-    if not request.get_json():
+
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, description="Not a JSON")
 
-    data = request.get_json()
     ignore_keys = ["id", "state_id", "created_at", "updated_at"]
     for key, value in data.items():
         if key not in ignore_keys:
